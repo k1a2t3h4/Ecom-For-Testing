@@ -1,5 +1,5 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
-import { fetchProductsFromDb } from '../../data/fetchProductsFromDb';
+import { getDb } from '../../lib/mongodb';
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'GET') {
@@ -12,9 +12,8 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   }
 
   try {
-    // Fetch all products in the category (no limit)
-    const products = await fetchProductsFromDb({ category });
-    const product = products.find((p: any) => p.slug === slug);
+    const db = await getDb();
+    const product = await db.collection('products').findOne({ category, slug });
     if (!product) {
       return res.status(404).json({ error: 'Product not found' });
     }

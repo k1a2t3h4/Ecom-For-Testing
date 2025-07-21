@@ -8,7 +8,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
   try {
     const db = await getDb();
     const products = db.collection('products');
-    const index = await products.createIndex({ category: 1, productId: 1 },{unique:true});
+    const index = await products.createIndex({ category: 1});
     res.status(200).json({ message: 'Indexes created', indexes: index });
   } catch (error) {
     res.status(500).json({ error: 'Failed to create indexes', details: error });

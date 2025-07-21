@@ -905,7 +905,7 @@ function getRandomMediaUrls(category, type, min, max) {
 }
 // --- End media URL logic ---
 
-const N = 1000;
+const N = 100;
 const M=1; // Number of products to generate for testing
 
 function generateReviewsForProduct(product: any, n: number): any[] {
