@@ -4,6 +4,7 @@ import {
   fetchCategoryList,
   fetchProductsByMultipleFilters
 } from './filterfunctions';
+import Link from 'next/link';
 
 export default function CollectionsPage() {
   const [categories, setCategories] = useState<any[]>([]);
@@ -431,45 +432,51 @@ export default function CollectionsPage() {
           <>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
               {filteredProducts.map((product: any) => (
-                <div key={product.productId} className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
-                  <div className="relative h-48 bg-gray-200">
-                    {product.globalMedia && product.globalMedia.length > 0 ? (
-                      <img
-                        src={product.globalMedia[0].url}
-                        alt={product.productName}
-                        className="w-full h-full object-cover"
-                      />
-                    ) : (
-                      <div className="w-full h-full flex items-center justify-center text-gray-400">
-                        No Image
-                      </div>
-                    )}
-                    <div className="absolute top-2 right-2 bg-white rounded-full p-1">
-                      <span className="text-xs font-medium text-green-600">
-                        {product.averageRating ? `${product.averageRating}★` : 'N/A'}
-                      </span>
-                    </div>
-                  </div>
-                  <div className="p-4">
-                    <h3 className="font-semibold text-gray-800 mb-2 line-clamp-2">
-                      {product.productName}
-                    </h3>
-                    <div className="flex items-center justify-between mb-2">
-                      <span className="text-lg font-bold text-gray-900">
-                        ₹{product.price}
-                      </span>
-                      {product.compareAtPrice && product.compareAtPrice > product.price && (
-                        <span className="text-sm text-gray-500 line-through">
-                          ₹{product.compareAtPrice}
-                        </span>
+                <Link
+                  key={product.productId}
+                  href={`/${encodeURIComponent(product.category)}/${encodeURIComponent(product.slug)}`}
+                  className="block"
+                >
+                  <div className="bg-white rounded-lg shadow-md overflow-hidden hover:shadow-lg transition-shadow">
+                    <div className="relative h-48 bg-gray-200">
+                      {product.globalMedia && product.globalMedia.length > 0 ? (
+                        <img
+                          src={product.globalMedia[0].url}
+                          alt={product.productName}
+                          className="w-full h-full object-cover"
+                        />
+                      ) : (
+                        <div className="w-full h-full flex items-center justify-center text-gray-400">
+                          No Image
+                        </div>
                       )}
+                      <div className="absolute top-2 right-2 bg-white rounded-full p-1">
+                        <span className="text-xs font-medium text-green-600">
+                          {product.averageRating ? `${product.averageRating}★` : 'N/A'}
+                        </span>
+                      </div>
                     </div>
-                    <div className="flex items-center justify-between text-sm text-gray-600">
-                      <span>{product.category}</span>
-                      <span>{product.totalReviews || 0} reviews</span>
+                    <div className="p-4">
+                      <h3 className="font-semibold text-gray-800 mb-2 line-clamp-2">
+                        {product.productName}
+                      </h3>
+                      <div className="flex items-center justify-between mb-2">
+                        <span className="text-lg font-bold text-gray-900">
+                          ₹{product.price}
+                        </span>
+                        {product.compareAtPrice && product.compareAtPrice > product.price && (
+                          <span className="text-sm text-gray-500 line-through">
+                            ₹{product.compareAtPrice}
+                          </span>
+                        )}
+                      </div>
+                      <div className="flex items-center justify-between text-sm text-gray-600">
+                        <span>{product.category}</span>
+                        <span>{product.totalReviews || 0} reviews</span>
+                      </div>
                     </div>
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
 
