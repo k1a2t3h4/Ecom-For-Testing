@@ -1,0 +1,131 @@
+const products={
+    "ProductID": "P0000001",
+    "ProductName": "P v1",
+    "meeshopageurl":'',
+    "status": "active",
+    "detailedDescription": "Detailed description of the variant.",
+    "price": 799,
+    "compareAtPrice": 999,
+    "trackQuantity": true,
+    "sku": "SKU-Bla-S",
+    "Quantity":"10",
+    "barcode": "1234567890123",
+    "category":["Women"],
+    "tags": [
+      "dresses"
+    ],
+    "collections": [
+      "womens"
+    ],
+    "Globalmedia": [
+      { type: 'image', url: 'http://images/v1-front.jpg' },
+      { type: 'gif', url: 'http://gif/v1-back.jpg' },
+      { type: 'video', url: 'http://videos/v1-spin.mp4' }
+    ],
+    "variantOptions": [
+      {
+        "name": "Color",
+        "values": [
+          "Black",
+          "White",
+          "Navy"
+        ]
+      },
+      {
+        "name": "Size",
+        "values": [
+          "S",
+          "M",
+          "L",
+          "XL"
+        ]
+      }
+    ],
+    "varientCombination":[
+        { 
+          "combination": {
+            "Color": "Black",
+            "Size": "S"
+          },
+          "varientId":'V10902',
+          "varientname":'',
+          "varient description":'',
+          "status":"active",
+          "meeshopageurl":'',
+          "Varientmedia": [
+            { type: 'image', url: 'http://images/v1-black-s-front.jpg' },
+            { type: 'video', url: 'http://videos/v1-black-s-back.jpg' }
+          ],
+          "price": 799,
+          "compareAtPrice": 999,
+          "sku": "SKU-Bla-S",
+          "barcode": "1234567890123",
+          "trackQuantity": true,
+          "Quantity":"10",
+          "vendor": "TeeWorld Inc."
+        },
+        {
+          "combination": {
+            "Color": "Black",
+            "Size": "M"
+          },
+          "varientId":'V10992',
+          "varientname":'',
+          "varient description":'',
+          "status":"active",
+          "meeshopageurl":'',
+          "Varientmedia": [
+            { type: 'image', url: 'http://images/v1-black-m-front.jpg' },
+            { type: 'gif', url: 'http://gif/v1-black-m-back.jpg' },
+            { type: 'video', url: 'http://videos/v1-spin.mp4' }
+          ],
+          "price": 799,
+          "compareAtPrice": 999,
+          "sku": "SKU-Bla-S",
+          "barcode": "1234567890123",
+          "trackQuantity": true,
+          "Quantity":"10",
+          "vendor": "TeeWorld Inc."
+        },
+        {
+          "combination": {
+            "Color": "White",
+            "Size": "S"
+          },
+          "varientId":'V10702',
+          "varientname":'',
+          "varient description":'',
+          "status":"active",
+          "meeshopageurl":'',
+          "Varientmedia": [
+            { type: 'image', url: 'http://images/v1-white-s-front.jpg' },
+            { type: 'image', url: 'http://images/v1-white-s-back.jpg' }
+          ],
+          "price": 799,
+          "compareAtPrice": 999,
+          "trackQuantity": true,
+          "Quantity":"10",
+          "sku": "SKU-Bla-S",
+          "barcode": "1234567890123",
+          "vendor": "TeeWorld Inc."
+        },
+        {
+          "combination": {
+            "Color": "White",
+            "Size": "M"
+          },
+          "Varientmedia": [
+            { type: 'image', url: 'http://images/v1-white-m-front.jpg' },
+            { type: 'image', url: 'http://images/v1-white-m-back.jpg' }
+          ],
+          "price": 799,
+          "compareAtPrice": 999,
+          "sku": "SKU-Whi-M",
+          "barcode": "1234567890126",
+          "trackQuantity": true,
+          "vendor": "TeeWorld Inc."
+        },.. more
+    ],
+    "alternativevendor": "TeeWorld Inc.",
+    "createdAt": "2024-01-15T11:00:00.000Z"
+  },..more products
