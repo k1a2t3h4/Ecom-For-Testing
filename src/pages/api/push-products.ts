@@ -905,7 +905,7 @@ function getRandomMediaUrls(category, type, min, max) {
 }
 // --- End media URL logic ---
 
-const N = 100;
+const N = 50;
 const M=1; // Number of products to generate for testing
 
 function generateReviewsForProduct(product: any, n: number): any[] {
@@ -1008,16 +1008,16 @@ function generateTestProducts(m: number, n: number): any[] {
     // --- Assign random media by category ---
     const cat = prod.category;
     prod.globalMedia = [];
-    prod.globalMedia.push(...getRandomMediaUrls(cat, 'image', 1, 5).map(url => ({ type: 'image', url })));
-    prod.globalMedia.push(...getRandomMediaUrls(cat, 'video', 0, 3).map(url => ({ type: 'video', url })));
-    prod.globalMedia.push(...getRandomMediaUrls(cat, 'gif', 0, 3).map(url => ({ type: 'gif', url })));
+    prod.globalMedia.push(...getRandomMediaUrls(cat, 'image', 0, 0).map(url => ({ type: 'image', url })));
+    prod.globalMedia.push(...getRandomMediaUrls(cat, 'video', 0, 0).map(url => ({ type: 'video', url })));
+    prod.globalMedia.push(...getRandomMediaUrls(cat, 'gif', 0, 0).map(url => ({ type: 'gif', url })));
     // --- Assign random media to each variant ---
     if (Array.isArray(prod.variantCombinations)) {
       for (const variant of prod.variantCombinations) {
         variant.variantMedia = [];
-        variant.variantMedia.push(...getRandomMediaUrls(cat, 'image', 1, 5).map(url => ({ type: 'image', url })));
-        variant.variantMedia.push(...getRandomMediaUrls(cat, 'video', 0, 3).map(url => ({ type: 'video', url })));
-        variant.variantMedia.push(...getRandomMediaUrls(cat, 'gif', 0, 3).map(url => ({ type: 'gif', url })));
+        variant.variantMedia.push(...getRandomMediaUrls(cat, 'image', 0, 0).map(url => ({ type: 'image', url })));
+        variant.variantMedia.push(...getRandomMediaUrls(cat, 'video', 0, 0).map(url => ({ type: 'video', url })));
+        variant.variantMedia.push(...getRandomMediaUrls(cat, 'gif', 0, 0).map(url => ({ type: 'gif', url })));
       }
     }
     // Generate reviews for this product

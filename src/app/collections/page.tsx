@@ -7,7 +7,6 @@ import {
 import Link from 'next/link';
 
 export default function CollectionsPage() {
-  const [categories, setCategories] = useState<any[]>([]);
   const [categoryList, setCategoryList] = useState<any[]>([]);
   const [products, setProducts] = useState<any[]>([]);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
@@ -30,7 +29,6 @@ export default function CollectionsPage() {
   useEffect(() => {
     async function fetchFilters() {
       const categoriesRes = await fetchCategoryList();
-      setCategories(categoriesRes.list || []);
       setCategoryList(categoriesRes.list || []);
     }
     fetchFilters();
@@ -69,6 +67,7 @@ export default function CollectionsPage() {
     fetchFilteredProducts();
     // eslint-disable-next-line
   }, [selectedCategories, selectedTags, selectedVariantOptions, selectedRatings, minPrice, maxPrice, inStockOnly, averageRatingFilter, averageRatingMode]);
+  
 
   const loadMoreProducts = async () => {
     setLoadingMore(true);

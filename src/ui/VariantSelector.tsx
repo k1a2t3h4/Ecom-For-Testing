@@ -10,7 +10,7 @@ export default function VariantSelector({ variantOptions }: VariantSelectorProps
 
   return (
     <div className="bg-white rounded-2xl p-6 shadow-md space-y-4">
-      <h3 className="text-lg font-semibold text-gray-900">Select Options</h3>
+      {/* <h3 className="text-lg font-semibold text-gray-900">Select Options</h3>
       {variantOptions.map((option, idx) => (
         <div key={idx} className="space-y-2">
           <label className="text-sm font-medium text-gray-700">{option.name}</label>
@@ -30,7 +30,7 @@ export default function VariantSelector({ variantOptions }: VariantSelectorProps
             ))}
           </div>
         </div>
-      ))}
+      ))} */}
     </div>
   );
 } 

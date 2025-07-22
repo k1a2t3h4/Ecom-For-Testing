@@ -84,16 +84,16 @@ export async function fetchProductsFromDb(filters: {
   const limit = filters.limit ?? 20;
   const skip = filters.skip ?? 0;
 console.log(query)
-const result = await db.collection('products')
-  .find(query)
-  .explain('executionStats');
+// const result = await db.collection('products')
+//   .find(query)
+//   .explain('executionStats');
 
-console.log(JSON.stringify(result, null, 2));
+// console.log(JSON.stringify(result, null, 2));
 
   // --- Final Query Execution ---
   const products = await db.collection('products')
     .find(query)
-    .sort({ createdAt: -1 }) // matches index
+    // .sort({ createdAt: -1 }) // matches index
     .skip(skip)
     .limit(limit)
     .toArray();
