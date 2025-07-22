@@ -229,6 +229,40 @@ export default function CollectionsPage() {
     }));
   }, [selectedTags, selectedCategories, categoryList]);
 
+  // Clean up invalid variant options when categories or tags change
+  useEffect(() => {
+    setSelectedVariantOptions(prevSelected => {
+      if (prevSelected.length === 0) {
+        return prevSelected;
+      }
+      
+      // Filter out any selected variant options that are no longer available
+      const validatedVariantOptions = prevSelected.map(selectedOption => {
+        const availableOption = availableVariantOptions.find(opt => opt.name === selectedOption.name);
+        if (!availableOption) {
+          // If the option name is no longer available, remove it completely
+          return null;
+        }
+        
+        // Filter out values that are no longer available
+        const validValues = selectedOption.values.filter(value => 
+          availableOption.values.includes(value)
+        );
+        
+        // If no valid values remain, remove the entire option
+        if (validValues.length === 0) {
+          return null;
+        }
+        
+        // Return the option with only valid values
+        return { ...selectedOption, values: validValues };
+      }).filter(option => option !== null);
+
+      // Return the validated options
+      return validatedVariantOptions;
+    });
+  }, [availableVariantOptions]);
+
   return (
     <div className="flex max-w-7xl mx-auto p-4 gap-6">
       {/* Left Sidebar - Filters (20%) */}

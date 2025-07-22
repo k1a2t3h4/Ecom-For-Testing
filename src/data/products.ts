@@ -5,7 +5,7 @@ export interface Media {
 
 export interface VariantOption {
   name: string;
-  values: string[];
+  values: string;
 }
 
 export interface VariantCombination {

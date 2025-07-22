@@ -976,6 +976,15 @@ function randomReviewCount() {
     return 100 + Math.floor(Math.random() * 901);
   }
 }
+function transformVariantOptions(variantOptions: any) {
+  const variantIndex: { name: string; value: string }[] = [];
+  for (const option of variantOptions) {
+    for (const val of option.values) {
+      variantIndex.push({ name: option.name, value: val });
+    }
+  }
+  return variantIndex;
+}
 
 function generateTestProducts(m: number, n: number): any[] {
   const result: any[] = [];
@@ -987,6 +996,15 @@ function generateTestProducts(m: number, n: number): any[] {
     prod.slug = `${sample.slug}-${i}`;
     prod._id = prod.productId;
     prod.createdAt = randomProductCreatedAt().toISOString();
+    prod.quantity=Math.floor(Math.random() * 1000)
+    if(prod.quantity>0)
+    {
+      prod.instock='true'
+    }
+    else{
+      prod.instock='false'
+    }
+    prod.variantOptions = transformVariantOptions(prod.variantOptions);
     // --- Assign random media by category ---
     const cat = prod.category;
     prod.globalMedia = [];

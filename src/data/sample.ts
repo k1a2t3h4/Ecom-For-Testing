@@ -36,16 +36,17 @@ export async function fetchProductsFromDb(filters: {
   const useTagsQuery = filters.tags?.length || filters.tag;
 
   // --- Only variantOptions filter (uses IndexB) ---
-  if (useVariantOptionQuery && filters.variantOptions?.length) {
-    query.$and = filters.variantOptions.map(opt => ({
-      variantOptions: {
+  if (useVariantOptionQuery) {
+    query.variantOptions = {
+      $all: filters.variantOptions?.map(opt => ({
         $elemMatch: {
           name: opt.name,
-          value: { $in: opt.values }
+          values: { $in: opt.values }
         }
-      }
-    }));
+      }))
+    };
   }
+
   // --- Only tags filter (uses IndexA) ---
   else if (useTagsQuery) {
     if (filters.tags?.length) {
@@ -70,7 +71,8 @@ export async function fetchProductsFromDb(filters: {
     };
   }
 
-  if (!useVariantOptionQuery && filters.variantOptions?.length ) {
+  // --- Variant Options (match via variantOptions array) ---
+  if (filters.variantOptions?.length) {
     query.$and = filters.variantOptions.map(opt => ({
       variantOptions: {
         $elemMatch: {
@@ -80,15 +82,10 @@ export async function fetchProductsFromDb(filters: {
       }
     }));
   }
+
   // --- Pagination ---
   const limit = filters.limit ?? 20;
   const skip = filters.skip ?? 0;
-console.log(query)
-const result = await db.collection('products')
-  .find(query)
-  .explain('executionStats');
-
-console.log(JSON.stringify(result, null, 2));
 
   // --- Final Query Execution ---
   const products = await db.collection('products')
