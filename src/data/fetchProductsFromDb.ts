@@ -83,12 +83,15 @@ export async function fetchProductsFromDb(filters: {
   // --- Pagination ---
   const limit = filters.limit ?? 20;
   const skip = filters.skip ?? 0;
-console.log(query)
-const result = await db.collection('products')
-  .find(query)
-  .explain('executionStats');
 
-console.log(JSON.stringify(result, null, 2));
+  // Only run explain in development mode for debugging
+  if (process.env.NODE_ENV === 'development') {
+    console.log('Query filters:', query);
+    const result = await db.collection('products')
+      .find(query)
+      .explain('executionStats');
+    console.log('Query execution stats:', JSON.stringify(result, null, 2));
+  }
 
   // --- Final Query Execution ---
   const products = await db.collection('products')
