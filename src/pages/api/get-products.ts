@@ -1,13 +1,21 @@
 import type { NextApiRequest, NextApiResponse } from 'next';
 import { fetchProductsFromDb } from '../../data/fetchProductsFromDb';
 
-
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
   if (req.method !== 'GET' && req.method !== 'POST') {
     return res.status(405).json({ error: 'Method not allowed' });
   }
   
   try {
+    // Add appropriate caching headers
+    if (req.method === 'GET') {
+      // Cache GET requests (basic product lists) for 1 minute
+      res.setHeader('Cache-Control', 'public, s-maxage=60, stale-while-revalidate=30');
+    } else {
+      // Shorter cache for POST requests (filtered results)
+      res.setHeader('Cache-Control', 'public, s-maxage=10, stale-while-revalidate=5');
+    }
+    
     let filters: any = {};
     
     if (req.method === 'GET') {

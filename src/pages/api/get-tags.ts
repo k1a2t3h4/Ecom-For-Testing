@@ -6,6 +6,9 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
     return res.status(405).json({ error: 'Method not allowed' });
   }
   try {
+    // Add caching headers since tags don't change frequently
+    res.setHeader('Cache-Control', 'public, s-maxage=300, stale-while-revalidate=60'); // 5 minutes cache
+    
     const db = await getDb();
     const doc = await db.collection('admin').findOne({ _id: 'tagList' } as any);
     res.status(200).json({ list: doc?.list || [] });

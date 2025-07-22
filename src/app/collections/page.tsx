@@ -2,7 +2,8 @@
 import React, { useEffect, useState, useMemo, useRef, useCallback } from 'react';
 import {
   fetchCategoryList,
-  fetchProductsByMultipleFilters
+  fetchProductsByMultipleFilters,
+  fetchAllFilterData
 } from './filterfunctions';
 import Link from 'next/link';
 
@@ -29,44 +30,39 @@ export default function CollectionsPage() {
   // Fetch categories and categoryList on mount
   useEffect(() => {
     async function fetchFilters() {
-      const categoriesRes = await fetchCategoryList();
-      setCategories(categoriesRes.list || []);
-      setCategoryList(categoriesRes.list || []);
+      try {
+        // Use batch fetch for better performance
+        const { categories: categoriesRes } = await fetchAllFilterData();
+        setCategories(categoriesRes.list || []);
+        setCategoryList(categoriesRes.list || []);
+      } catch (error) {
+        console.error('Error fetching filters:', error);
+        // Fallback to individual fetch
+        try {
+          const categoriesRes = await fetchCategoryList();
+          setCategories(categoriesRes.list || []);
+          setCategoryList(categoriesRes.list || []);
+        } catch (fallbackError) {
+          console.error('Fallback fetch also failed:', fallbackError);
+        }
+      }
     }
     fetchFilters();
   }, []);
 
-  // Fetch products when filters change
+  // Reset products when filters change, but debounce to avoid excessive requests
   useEffect(() => {
     setProducts([]);
     setHasMore(true);
   }, [selectedCategories, selectedTags, selectedVariantOptions, selectedRatings, minPrice, maxPrice, inStockOnly, averageRatingFilter, averageRatingMode]);
 
+  // Debounced fetch products when filters change
   useEffect(() => {
-    async function fetchFilteredProducts() {
-      setLoading(true);
-      try {
-        const filters: any = {};
-        if (selectedCategories.length > 0) filters.categories = selectedCategories;
-        if (selectedTags.length > 0) filters.tags = selectedTags;
-        if (selectedVariantOptions.length > 0) filters.variantOptions = selectedVariantOptions;
-        if (selectedRatings.length > 0) filters.minRating = Math.min(...selectedRatings);
-        if (minPrice && !isNaN(Number(minPrice))) filters.minPrice = Number(minPrice);
-        if (maxPrice && !isNaN(Number(maxPrice))) filters.maxPrice = Number(maxPrice);
-        if (inStockOnly) filters.inStockOnly = true;
-        if (averageRatingFilter && !isNaN(Number(averageRatingFilter))) {
-          filters.averageRating = { [averageRatingMode]: Number(averageRatingFilter) };
-        }
-        filters.limit = limit;
-        filters.skip = 0;
-        let prods = await fetchProductsByMultipleFilters(filters);
-        setProducts(prods);
-        setHasMore(prods.length === limit);
-      } finally {
-        setLoading(false);
-      }
-    }
-    fetchFilteredProducts();
+    const timeoutId = setTimeout(async () => {
+      await fetchFilteredProducts();
+    }, 150); // 150ms debounce to prevent rapid fire requests
+    
+    return () => clearTimeout(timeoutId);
     // eslint-disable-next-line
   }, [selectedCategories, selectedTags, selectedVariantOptions, selectedRatings, minPrice, maxPrice, inStockOnly, averageRatingFilter, averageRatingMode]);
 
@@ -91,6 +87,35 @@ export default function CollectionsPage() {
       setHasMore(prods.length === limit);
     } finally {
       setLoadingMore(false);
+    }
+  };
+
+  // Optimized fetch function for initial and filter changes
+  const fetchFilteredProducts = async () => {
+    setLoading(true);
+    try {
+      const filters: any = {};
+      if (selectedCategories.length > 0) filters.categories = selectedCategories;
+      if (selectedTags.length > 0) filters.tags = selectedTags;
+      if (selectedVariantOptions.length > 0) filters.variantOptions = selectedVariantOptions;
+      if (selectedRatings.length > 0) filters.minRating = Math.min(...selectedRatings);
+      if (minPrice && !isNaN(Number(minPrice))) filters.minPrice = Number(minPrice);
+      if (maxPrice && !isNaN(Number(maxPrice))) filters.maxPrice = Number(maxPrice);
+      if (inStockOnly) filters.inStockOnly = true;
+      if (averageRatingFilter && !isNaN(Number(averageRatingFilter))) {
+        filters.averageRating = { [averageRatingMode]: Number(averageRatingFilter) };
+      }
+      filters.limit = limit;
+      filters.skip = 0;
+      let prods = await fetchProductsByMultipleFilters(filters);
+      setProducts(prods);
+      setHasMore(prods.length === limit);
+    } catch (error) {
+      console.error('Error fetching filtered products:', error);
+      setProducts([]);
+      setHasMore(false);
+    } finally {
+      setLoading(false);
     }
   };
 
